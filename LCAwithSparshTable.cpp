@@ -26,19 +26,6 @@ class LCA{ // lca with sparsh table in O(1) time
    private:
     vector<int> euler , height , logTable , first;
     vector<vector<int>> v;
-   public:
-    LCA(vector<vector<int>> &adj, int n , int root = 1){
-        euler.clear(); euler.eb(-1);
-        height.assign(n+2,0);
-        first.assign(n+2,0);
-        dfs(adj,root,-1);
-        int sz = euler.size();
-        logTable.assign(sz+5,0);
-        logTable[1] = 0;
-        for(int i=2;i<=sz+3;i++) logTable[i] = logTable[i/2]+1;
-        v.clear(); v.assign(logTable[sz+2]+1 , vector<int>(sz+2,0));
-        pre(sz-1);
-    }
     void dfs(vector<vector<int>> &adj,int node, int par, int h=1){
         first[node] = euler.size();
         euler.eb(node);
@@ -60,6 +47,19 @@ class LCA{ // lca with sparsh table in O(1) time
                 else v[lg][i] = q;
             }
         }
+    }
+   public:
+    LCA(vector<vector<int>> &adj, int n , int root = 1){
+        euler.clear(); euler.eb(-1);
+        height.assign(n+2,0);
+        first.assign(n+2,0);
+        dfs(adj,root,-1);
+        int sz = euler.size();
+        logTable.assign(sz+5,0);
+        logTable[1] = 0;
+        for(int i=2;i<=sz+3;i++) logTable[i] = logTable[i/2]+1;
+        v.clear(); v.assign(logTable[sz+2]+1 , vector<int>(sz+2,0));
+        pre(sz-1);
     }
     int lca(int a, int b){
         int l = first[a] , r = first[b];
